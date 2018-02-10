@@ -14,16 +14,16 @@ wiki_url = 'https://en.wikipedia.org/w/api.php'
 def hit_wiki_api(data):
     response = requests.get(wiki_url, params=data)
 
-    response_json = response.json()
+    return response.json()
+
+def find_page_id_of_topic(topic):
+    response_json = hit_wiki_api({
+        'action': 'query', 'list': 'search', 'srsearch': topic, 'format':'json'
+    })
+    
     search_results = response_json['query']['search']
     page_id = search_results[0]['pageid']
 
-    return page_id
-
-def find_page_id_of_topic(topic):
-    page_id = hit_wiki_api({
-        'action': 'query', 'list': 'search', 'srsearch': topic, 'format':'json'
-    })
     return page_id
 
 def repl():
