@@ -16,6 +16,17 @@ def hit_wiki_api(data):
 
     return response.json()
 
+def find_url_of_page(page_id):
+    response_json = hit_wiki_api({
+        'action': 'query',
+        'prop': 'info',
+        'pageids': page_id,
+        'inprop': 'url',
+        'format': 'json'
+    })
+    search_result = response_json['query']['pages'][str(page_id)]
+    return search_result['canonicalurl']
+
 def find_page_id_of_topic(topic):
     response_json = hit_wiki_api({
         'action': 'query', 'list': 'search', 'srsearch': topic, 'format':'json'
@@ -36,5 +47,6 @@ def repl():
             user_not_exited = False
         else:
             page_id = find_page_id_of_topic(user_input)
-            print('Page ID: ', page_id)
+            page_url = find_url_of_page(page_id)
+            print(page_url)
 repl()
