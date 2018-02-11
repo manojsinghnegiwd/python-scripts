@@ -1,6 +1,8 @@
 import requests
-import json
-from io import StringIO
+import urllib.request as urllib2
+from bs4 import BeautifulSoup
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 print('Welcome to Tell Me About Python script')
 print('You can type anything from a person name to a topic name.')
@@ -37,6 +39,11 @@ def find_page_id_of_topic(topic):
 
     return page_id
 
+def scrap_information(url):
+    wiki_page = urllib2.urlopen(url)
+    parsed_wiki_page = BeautifulSoup(wiki_page, 'html.parser')
+
+
 def repl():
     global user_not_exited
 
@@ -48,5 +55,5 @@ def repl():
         else:
             page_id = find_page_id_of_topic(user_input)
             page_url = find_url_of_page(page_id)
-            print(page_url)
+            scrap_information(page_url)
 repl()
