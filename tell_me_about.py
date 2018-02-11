@@ -14,6 +14,10 @@ print(40*'*')
 user_not_exited = True
 wiki_url = 'https://en.wikipedia.org/w/api.php'
 
+def print_wiki_content(info_table):
+    for scope in info_table:
+            print(scope['name'], ' : ', scope['data'])
+
 def hit_wiki_api(data):
     response = requests.get(wiki_url, params=data)
 
@@ -46,11 +50,10 @@ def scrap_information(url):
     infobox = parsed_wiki_page('table', attrs={
         'class': 'infobox'
     })
-    
+    info_table = []
     if len(infobox) > 0:
         infobox_content = infobox[0].contents
         filtered_content = [tag for tag in infobox_content if tag != '\n']
-        info_table = []
         for content in filtered_content:
             scope = content('th', attrs={'scope': 'row'})
             data = content('td')
@@ -59,8 +62,10 @@ def scrap_information(url):
                     'name': scope[0].text.strip(),
                     'data': data[0].text.strip().replace('\n', ' ')
                 })
-        for scope in info_table:
-            print(scope['name'], ' : ', scope['data']) 
+        return info_table
+    else:
+        return False
+         
 
 def repl():
     global user_not_exited
@@ -73,5 +78,9 @@ def repl():
         else:
             page_id = find_page_id_of_topic(user_input)
             page_url = find_url_of_page(page_id)
-            scrap_information(page_url)
+            content_to_print = scrap_information(page_url)
+            if content_to_print:
+                print_wiki_content(content_to_print)
+            else:
+                print('no results found')
 repl()
