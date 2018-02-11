@@ -9,7 +9,12 @@ def add_item(user_input):
     todo_list.append(itemText)
 
 def edit_item(user_input):
-    print(user_input)
+    global todo_list
+    
+    itemIndex = int(user_input[1]) - 1
+
+    todo_list[itemIndex] = " ".join(user_input[2:])
+
 
 def list_items(user_input):
     for i in range(len(todo_list)):
