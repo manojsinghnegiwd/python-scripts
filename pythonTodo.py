@@ -6,13 +6,14 @@ todo_list = []
 
 def add_item(user_input):
     itemText = " ".join(user_input[1:])
-    print(itemText)
+    todo_list.append(itemText)
 
 def edit_item(user_input):
     print(user_input)
 
 def list_items(user_input):
-    print(user_input)
+    for i in range(len(todo_list)):
+        print(i, ' ', todo_list[i])
 
 def delete_item(user_input):
     print(user_input)
@@ -54,7 +55,6 @@ def repl():
             splitted_input = user_input.split(' ')
             command_to_exec = avaliable_commands[splitted_input[0]]
             command_to_exec['execute'](splitted_input)
-            print(splitted_input[0])
 
 
 repl()
