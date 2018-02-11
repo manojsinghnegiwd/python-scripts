@@ -42,7 +42,8 @@ def find_page_id_of_topic(topic):
 def scrap_information(url):
     wiki_page = urllib2.urlopen(url)
     parsed_wiki_page = BeautifulSoup(wiki_page, 'html.parser')
-
+    infobox = parsed_wiki_page('table', attrs={'class':'infobox biography vcard'})
+    print(infobox)
 
 def repl():
     global user_not_exited
