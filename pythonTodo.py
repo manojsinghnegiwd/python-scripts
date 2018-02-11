@@ -13,10 +13,14 @@ def edit_item(user_input):
 
 def list_items(user_input):
     for i in range(len(todo_list)):
-        print(i, ' ', todo_list[i])
+        print(i+1, ' ', todo_list[i])
 
 def delete_item(user_input):
-    print(user_input)
+    global todo_list
+
+    todo_item = todo_list[int(user_input[1]) - 1] 
+    if todo_item:
+        todo_list.remove(todo_item)
 
 def exit_program(user_input):
     global user_not_exited
