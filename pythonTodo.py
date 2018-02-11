@@ -2,9 +2,11 @@ print('Welcome to Python Todo Script')
 print('You can type Help to list available commands')
 
 user_not_exited = True
+todo_list = []
 
 def add_item(user_input):
-    print(user_input)
+    itemText = " ".join(user_input[1:])
+    print(itemText)
 
 def edit_item(user_input):
     print(user_input)
@@ -16,7 +18,9 @@ def delete_item(user_input):
     print(user_input)
 
 def exit_program(user_input):
-    print(user_input)
+    global user_not_exited
+    user_not_exited = False
+    
 
 avaliable_commands = {
     'add': {
@@ -42,7 +46,6 @@ avaliable_commands = {
 }
 
 def repl():
-    global user_not_exited
     
     while user_not_exited:
         user_input = input('> ')
