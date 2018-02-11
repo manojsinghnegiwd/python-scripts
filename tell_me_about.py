@@ -2,6 +2,7 @@ import requests
 import urllib.request as urllib2
 from bs4 import BeautifulSoup
 import ssl
+import re
 ssl._create_default_https_context = ssl._create_unverified_context
 
 print('Welcome to Tell Me About Python script')
@@ -42,8 +43,24 @@ def find_page_id_of_topic(topic):
 def scrap_information(url):
     wiki_page = urllib2.urlopen(url)
     parsed_wiki_page = BeautifulSoup(wiki_page, 'html.parser')
-    infobox = parsed_wiki_page('table', attrs={'class':'infobox biography vcard'})
-    print(infobox)
+    infobox = parsed_wiki_page('table', attrs={
+        'class': 'infobox'
+    })
+    
+    if len(infobox) > 0:
+        infobox_content = infobox[0].contents
+        filtered_content = [tag for tag in infobox_content if tag != '\n']
+        info_table = []
+        for content in filtered_content:
+            scope = content('th', attrs={'scope': 'row'})
+            data = content('td')
+            if len(scope) > 0:
+                info_table.append({
+                    'name': scope[0].text.strip(),
+                    'data': data[0].text.strip().replace('\n', ' ')
+                })
+        for scope in info_table:
+            print(scope['name'], ' : ', scope['data']) 
 
 def repl():
     global user_not_exited
